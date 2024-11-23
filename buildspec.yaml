@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com
+  build:
+    commands:
+      - docker build -t reservations -f ./apps/reservations/Dockerfile .
+      - docker tag reservations:latest 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/reservations:latest
+
+      - docker build -t auth -f ./apps/auth/Dockerfile .
+      - docker tag auth:latest 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/auth:latest
+
+      - docker build -t payments -f ./apps/payments/Dockerfile .
+      - docker tag payments:latest 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/payments:latest
+
+      - docker build -t notifications -f ./apps/reservations/Dockerfile .
+      - docker tag notifications:latest 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/notifications:latest
+  post_build:
+    commands:
+      - docker push 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/reservations:latest
+      - docker push 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/auth:latest
+      - docker push 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/payments:latest
+      - docker push 418272791264.dkr.ecr.ap-southeast-2.amazonaws.com/notifications:latest

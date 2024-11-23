@@ -1,0 +1,74 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+steps:
+  # Reservations
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/micro-sleepr/reservations/production',
+        '-f',
+        'apps/reservations/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/micro-sleepr/reservations/production']
+
+  # Auth
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/micro-sleepr/auth/production',
+        '-f',
+        'apps/auth/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/micro-sleepr/auth/production']
+
+  # Notifications
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/micro-sleepr/notifications/production',
+        '-f',
+        'apps/notifications/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/micro-sleepr/notifications/production']
+
+  # Payments
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/micro-sleepr/payments/production',
+        '-f',
+        'apps/payments/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      ['push', 'asia-southeast1-docker.pkg.dev/micro-sleepr/payments/production']
+
+# Specify one of the following logging options
+
+# Option 1: Use a specific logs bucket
+# logsBucket: gs://your-logs-bucket-name
+
+# Option 2: Use regional user-owned bucket (uncomment below)
+# options:
+#   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
+# Option 3: Cloud Logging only (no storage bucket required)
+# logging: CLOUD_LOGGING_ONLY
