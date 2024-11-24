@@ -52,4 +52,9 @@ services:
     env_file:
       - .env
     ports:
-      - '3306:3306' # Sử dụng dấu gạch ngang với định dạng danh sách
+      - '3306:3306'
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - 5672:5672
